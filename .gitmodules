@@ -1,0 +1,3 @@
+[submodule "proto/doggo-proto"]
+	path = proto/doggo-proto
+	url = git@github.com:DogGoOrg/doggo-proto.git
