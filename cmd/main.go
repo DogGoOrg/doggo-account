@@ -1,31 +1,18 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
 	"os"
 
+	"github.com/DogGoOrg/doggo-account/internal/base"
 	"github.com/DogGoOrg/doggo-account/internal/db"
 	"github.com/DogGoOrg/doggo-account/proto/proto_services/Account"
 	"github.com/DogGoOrg/doggo-orm/models"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
-	"gorm.io/gorm"
 )
-
-type server struct {
-	Account.UnimplementedAccountServer
-	Database *gorm.DB
-}
-
-// ping method implementation
-func (receiver *server) Ping(ctx context.Context, in *Account.PingRequest) (*Account.PingResponse, error) {
-	return &Account.PingResponse{
-		Status: "OK",
-	}, nil
-}
 
 func main() {
 	appMode := os.Getenv("MODE")
@@ -42,7 +29,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	serv := new(server)
+	serv := new(base.Server)
 
 	db := db.InitDB()
 
