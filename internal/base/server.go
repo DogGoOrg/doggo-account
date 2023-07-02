@@ -3,6 +3,7 @@ package base
 import (
 	"context"
 
+	"github.com/DogGoOrg/doggo-account/internal/handlers"
 	"github.com/DogGoOrg/doggo-account/proto/proto_services/Account"
 	"gorm.io/gorm"
 )
@@ -13,9 +14,7 @@ type Server struct {
 }
 
 func (r *Server) Ping(ctx context.Context, in *Account.PingRequest) (*Account.PingResponse, error) {
-	return &Account.PingResponse{
-		Status: "OK",
-	}, nil
+	return handlers.PingHandler(ctx, in)
 }
 
 func (r *Server) GetAccountById(ctx context.Context, in *Account.GetAccountRequest) (*Account.GetAccountResponse, error) {
@@ -26,12 +25,7 @@ func (r *Server) GetAccountById(ctx context.Context, in *Account.GetAccountReque
 }
 
 func (r *Server) Login(ctx context.Context, in *Account.LoginRequest) (*Account.LoginResponse, error) {
-	return &Account.LoginResponse{
-		AccessToken:  "",
-		RefreshToken: "",
-		Id:           "1",
-		Email:        "nik@gmail.com",
-	}, nil
+	return handlers.LoginHandler(ctx, in)
 }
 
 func (r *Server) Logout(ctx context.Context, in *Account.LogoutRequest) (*Account.LogoutResponse, error) {
