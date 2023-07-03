@@ -21,10 +21,11 @@ import (
 func genTokenPair(email string, id any) (*[2]string, error) {
 	arr := [2]string{}
 
+	//create claims
 	accessClaims := &jwt.MapClaims{
 		"email": email,
 		"id":    id,
-		"expIn": time.Now().Add(15 * time.Minute),
+		"expIn": time.Now().Add(15 * time.Minute), // 10 minutes
 	}
 
 	refreshClaims := &jwt.MapClaims{
@@ -33,11 +34,14 @@ func genTokenPair(email string, id any) (*[2]string, error) {
 		"id":    id,
 	}
 
+	//define tokens
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
 
+	//get secrets
 	accessSecret, refreshSecret := os.Getenv("ACCESS_SECRET"), os.Getenv("REFRESH_SECRET")
 
+	//generate tokens
 	if access, err := accessToken.SignedString([]byte(accessSecret)); err == nil {
 		arr[0] = access
 	} else {
@@ -66,7 +70,6 @@ func getPasswordHash(password string) string {
 }
 
 func LoginHandler(ctx context.Context, in *Account.LoginRequest, db *gorm.DB) (*Account.LoginResponse, error) {
-	// log.Fatalln("AAAAÀ")
 	//get response parameters
 	email, password := in.Email, in.Password
 
@@ -80,19 +83,19 @@ func LoginHandler(ctx context.Context, in *Account.LoginRequest, db *gorm.DB) (*
 	var account *models.Account = &models.Account{Email: email}
 
 	wg.Add(1)
-	go func(email string) {
-		db.Take(&account)
-		wg.Done()
-	}(email)
+	go func() {
+		defer wg.Done()
+		db.Take(account)
+	}()
 
 	wg.Wait()
 
-	if account == nil {
+	if account.Email != email {
 		return nil, status.Error(codes.NotFound, "User not found")
 	}
 
 	//get hashed password
-	hash := getPasswordHash(password)
+	hash := helpers.GetPasswordHash(password)
 
 	//compare hashed password with stored password
 	if hash != account.Password {

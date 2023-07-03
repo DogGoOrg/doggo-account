@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/DogGoOrg/doggo-orm/models"
 	"gorm.io/driver/postgres" //nolint
 	"gorm.io/gorm"
 )
@@ -22,6 +23,8 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	db.AutoMigrate(&models.Account{})
 
 	return db
 }

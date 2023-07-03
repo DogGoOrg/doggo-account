@@ -3,7 +3,7 @@ module github.com/DogGoOrg/doggo-account
 go 1.20
 
 require (
-	github.com/DogGoOrg/doggo-orm v0.1.1
+	github.com/DogGoOrg/doggo-orm v0.1.2
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.5.1
 	google.golang.org/grpc v1.56.1

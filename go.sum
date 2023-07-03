@@ -1,5 +1,5 @@
-github.com/DogGoOrg/doggo-orm v0.1.1 h1:d2nDYaylO6D0fkuZMSQljxxd0mEpEebsoyYlrB6MWNo=
-github.com/DogGoOrg/doggo-orm v0.1.1/go.mod h1:xuGsAMY3N5w2FrGEm6RarPcDQjNbA0fRi9eZ1nLgzvk=
+github.com/DogGoOrg/doggo-orm v0.1.2 h1:vSbJKLKn3Fqbh3z7kDXi+8jllSoFb0fkTVfZ5Jh/q8Y=
+github.com/DogGoOrg/doggo-orm v0.1.2/go.mod h1:xuGsAMY3N5w2FrGEm6RarPcDQjNbA0fRi9eZ1nLgzvk=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/golang-jwt/jwt v3.2.2+incompatible h1:IfV12K8xAKAnZqdXVzCZ+TOjboZ2keLg81eXfW3O+oY=
