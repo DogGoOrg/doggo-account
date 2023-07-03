@@ -8,6 +8,7 @@ import (
 
 	"github.com/DogGoOrg/doggo-account/internal/base"
 	"github.com/DogGoOrg/doggo-account/internal/db"
+	"github.com/DogGoOrg/doggo-account/internal/middleware"
 	"github.com/DogGoOrg/doggo-account/proto/proto_services/Account"
 	"github.com/DogGoOrg/doggo-orm/models"
 	"github.com/joho/godotenv"
@@ -37,7 +38,9 @@ func main() {
 
 	db.AutoMigrate(&models.Account{})
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(middleware.UnaryCallLogger),
+	)
 
 	Account.RegisterAccountServer(s, serv)
 	log.Printf("server listening at %v", listener.Addr())
