@@ -25,7 +25,7 @@ func (r *Server) GetAccountById(ctx context.Context, in *Account.GetAccountReque
 }
 
 func (r *Server) Login(ctx context.Context, in *Account.LoginRequest) (*Account.LoginResponse, error) {
-	return handlers.LoginHandler(ctx, in)
+	return handlers.LoginHandler(ctx, in, r.Database)
 }
 
 func (r *Server) Logout(ctx context.Context, in *Account.LogoutRequest) (*Account.LogoutResponse, error) {

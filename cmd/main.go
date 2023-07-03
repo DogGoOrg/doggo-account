@@ -35,7 +35,7 @@ func main() {
 
 	serv.Database = db
 
-	db.AutoMigrate(&models.Account{}, &models.Pet{})
+	db.AutoMigrate(&models.Account{})
 
 	s := grpc.NewServer()
 
