@@ -23,6 +23,7 @@ const (
 	Account_Login_FullMethodName          = "/Account.Account/Login"
 	Account_Logout_FullMethodName         = "/Account.Account/Logout"
 	Account_Refresh_FullMethodName        = "/Account.Account/Refresh"
+	Account_Register_FullMethodName       = "/Account.Account/Register"
 	Account_Ping_FullMethodName           = "/Account.Account/Ping"
 )
 
@@ -34,6 +35,7 @@ type AccountClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	// default ping response for microservice
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
 }
@@ -82,6 +84,15 @@ func (c *accountClient) Refresh(ctx context.Context, in *RefreshRequest, opts ..
 	return out, nil
 }
 
+func (c *accountClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, Account_Register_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
 	out := new(PingResponse)
 	err := c.cc.Invoke(ctx, Account_Ping_FullMethodName, in, out, opts...)
@@ -99,6 +110,7 @@ type AccountServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	// default ping response for microservice
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
 	mustEmbedUnimplementedAccountServer()
@@ -119,6 +131,9 @@ func (UnimplementedAccountServer) Logout(context.Context, *LogoutRequest) (*Logo
 }
 func (UnimplementedAccountServer) Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
+}
+func (UnimplementedAccountServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedAccountServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
@@ -208,6 +223,24 @@ func _Account_Refresh_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Account_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Account_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Account_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingRequest)
 	if err := dec(in); err != nil {
@@ -248,6 +281,10 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Refresh",
 			Handler:    _Account_Refresh_Handler,
+		},
+		{
+			MethodName: "Register",
+			Handler:    _Account_Register_Handler,
 		},
 		{
 			MethodName: "Ping",
